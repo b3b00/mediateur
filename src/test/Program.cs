@@ -1,5 +1,6 @@
 
 
+using external;
 using interfaces;
 using mediateur;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,8 @@ public class Program
 
         var builder = Host.CreateApplicationBuilder(args);
 
+        var t = typeof(Plan9Greeter);
+        
 // Enregistrement d’un service
 // builder.Services.AddTransient<IGreeter, BasicGreeter>();
 // builder.Services.AddTransient<IGreeter, ObsequiousGreeter>();
@@ -26,6 +29,7 @@ public class Program
         
         var greeter = app.Services.GetService<IGreeter>();
         greeter.Greet("Olivier");
+        greeter.SayBye("Olivier");
 
         var myRequestHandler = app.Services.GetService<IMyRequestHandler>();
         Console.WriteLine("3+4=" + myRequestHandler.Sum(3, 4));
