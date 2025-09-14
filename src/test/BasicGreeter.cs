@@ -1,4 +1,8 @@
-﻿namespace mediateur;
+
+
+using interfaces;
+
+namespace mediateurtest;
 
 public class ObsequiousGreeter : IGreeter
 {
@@ -15,3 +19,4 @@ public class BasicGreeter : IGreeter
         Console.WriteLine($"Bonjour, {name} !");
     }
 }
+

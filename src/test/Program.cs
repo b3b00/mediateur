@@ -1,6 +1,7 @@
-﻿// See https://aka.ms/new-console-template for more information
+
+
+using interfaces;
 using mediateur;
-using mediateurexternal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -22,8 +23,7 @@ public class Program
 
 // Récupération et utilisation du service
 //var greeter = app.Services.GetRequiredService<IGreeter>();
-        var t = typeof(Plan9FromOuterSpaceGreeter).Name;
-        Console.WriteLine($"external : "+t);
+        
         var greeter = app.Services.GetService<IGreeter>();
         greeter.Greet("Olivier");
 

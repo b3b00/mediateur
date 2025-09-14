@@ -1,4 +1,8 @@
-﻿namespace mediateur;
+
+
+using mediateur;
+
+namespace interfaces;
 
 public interface IGreeter : INotificationHandler
 {
