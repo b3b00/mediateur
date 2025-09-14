@@ -11,7 +11,7 @@ public class MyRequestHandler : IMyRequestHandler
     }
 }
 
-public class AnotherMyRequestHandler : IMyRequestHandler
+public class AnotherMyRequestHandler //: IMyRequestHandler
 {
     public int Sum(int i, int j)
     {

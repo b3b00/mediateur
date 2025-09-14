@@ -46,21 +46,16 @@ public static class MediateurRegistrer
 
                 .FirstOrDefault(i => i != typeof(INotificationHandler) && i.IsAssignableTo(typeof(INotificationHandler)));
 
-    
-
             if (interfaceType is not null)
 
             {
                 var instance= Activator.CreateInstance(implementationType);
                 instances.Add((I)instance);
             }
-
         }
 
         var aggregator = (I)DynamicTypeBuilder.CreateTypeForNotificationHandler<I>(instances);
         services.AddSingleton(type,aggregator);
-        
-
     }
 
     public static void RegisterRequestHandlers<I>(this IServiceCollection services) where I : IRequestHandler
@@ -69,15 +64,19 @@ public static class MediateurRegistrer
         var assembly = typeof(I).Assembly;
         if (!type.IsInterface)
             throw new ArgumentException($"type {typeof(I).Name} must be an interface");
+        var handlerTypes = AppDomain.CurrentDomain
+            .GetAssemblies()
+            .SelectMany(a =>
+            {
+                var types = a.GetTypes()
 
-        
-        var handlerTypes = assembly.GetTypes()
+                    .Where(t => t is { IsClass: true, IsAbstract: false }
 
-            .Where(t => t is { IsClass: true, IsAbstract: false }
+                                && t.IsAssignableTo(typeof(IRequestHandler)))
 
-                        && t.IsAssignableTo(typeof(IRequestHandler)))
-
-            .ToList();
+                    .ToList();
+                return types;
+            }).ToList();
 
         if (handlerTypes.Count > 1)
         {
@@ -88,31 +87,5 @@ public static class MediateurRegistrer
         {
             services.AddTransient(typeof(I), handlerTypes.First());
         }
-
-        // List<I> instances = new List<I>();
-        //
-        // foreach (var implementationType in handlerTypes)
-        //
-        // {
-        //
-        //     var interfaceType = implementationType.GetInterfaces()
-        //
-        //         .FirstOrDefault(i => i != typeof(IRequestHandler) && i.IsAssignableTo(typeof(IRequestHandler)));
-        //
-        //
-        //
-        //     if (interfaceType is not null)
-        //
-        //     {
-        //         var instance= Activator.CreateInstance(implementationType);
-        //         instances.Add((I)instance);
-        //     }
-        //
-        // }
-        //
-        // //var instances = services.OfType<I>().ToList();
-        //
-        // var aggregator = DynamicTypeBuilder.CreateTypeForNotificationHandler<I>(instances);
-        // services.AddSingleton(type,aggregator);
     }
 }

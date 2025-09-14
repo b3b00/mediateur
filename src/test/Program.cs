@@ -15,18 +15,12 @@ public class Program
 
         var builder = Host.CreateApplicationBuilder(args);
 
-        var t = typeof(Plan9Greeter);
+        var t = typeof(Plan9Greeter); // force loading external handlers
         
-// Enregistrement d’un service
-// builder.Services.AddTransient<IGreeter, BasicGreeter>();
-// builder.Services.AddTransient<IGreeter, ObsequiousGreeter>();
         builder.Services.RegisterNotificationHandlers<IGreeter>();
         builder.Services.RegisterRequestHandlers<IMyRequestHandler>();
         var app = builder.Build();
 
-// Récupération et utilisation du service
-//var greeter = app.Services.GetRequiredService<IGreeter>();
-        
         var greeter = app.Services.GetService<IGreeter>();
         greeter.Greet("Olivier");
         greeter.SayBye("Olivier");
